@@ -6,6 +6,9 @@ EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 class UserManager(models.Manager):
     def basic_validator(self, postData):
         errors = {}
+        user=User.objects.all().values().filter(email=postData['email'])
+        if user:
+            errors["user"] = "email already exists in database"
         if len(postData['firstname']) < 2:
             errors["firstname"] = "firstname cannot be less than 2 characters"
         if postData['firstname'].isalpha() is False:
